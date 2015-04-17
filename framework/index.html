@@ -45,10 +45,10 @@
    {{#questions}}
   <div class="txt--center question grid page">
     <div x="1" y="1" sizey="3" class="text-white-darker middle bold box">{{q}}</div>
-    <div x="1" y="4" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='a' ? 'correct':''}}" data-ripple-color="{{ans=='a' ? 'red':'green'}}">{{a}}</div>
-    <div x="1" y="5" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='b' ? 'correct':''}}" data-ripple-color="{{ans=='b' ? 'red':'green'}}">{{b}}</div>
-    <div x="1" y="6" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='c' ? 'correct':''}}" data-ripple-color="{{ans=='c' ? 'red':'green'}}">{{c}}</div>
-    <div x="1" y="7" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='d' ? 'correct':''}}" data-ripple-color="{{ans=='d' ? 'red':'green'}}">{{d}}</div>
+    <div x="1" y="4" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='a' ? 'correct':''}}" data-ripple-color="{{ans=='a' ? 'green':'red'}}">{{a}}</div>
+    <div x="1" y="5" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='b' ? 'correct':''}}" data-ripple-color="{{ans=='b' ? 'green':'red'}}">{{b}}</div>
+    <div x="1" y="6" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='c' ? 'correct':''}}" data-ripple-color="{{ans=='c' ? 'green':'red'}}">{{c}}</div>
+    <div x="1" y="7" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='d' ? 'correct':''}}" data-ripple-color="{{ans=='d' ? 'green':'red'}}">{{d}}</div>
   </div>
   {{/questions}}
 </script>
@@ -85,8 +85,8 @@
     if(cnQ<10) {
       bar.set(0);
       if(cnQ>1)
-        TweenMax.to($(".page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3})
-      TweenMax.to($(".page:nth-child(" +cnQ + ")"),0.6,{x:0,onComplete:function() {
+        TweenMax.to($("#questions .page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3})
+      TweenMax.to($("#questions .page:nth-child(" +cnQ + ")"),0.6,{x:0,onComplete:function() {
         bar.animate(1,{duration:8000},showAns);
       }});
       cnQ++;
@@ -94,17 +94,17 @@
       showScore();
   }
   function showScore() {
-    TweenMax.to($(".page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3});
+    TweenMax.to($("#questions .page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3});
     TweenMax.to($("#score"),0.6,{x:0});
 
   }
   function showAns(el) {
     if(el && el.hasClass("ans")) {
       $(el).not(".correct").hide();
-      $(el).siblings(".correct").css({backgroundColor:"#9ccc65",color:"#ffffff"});
+      $(el).siblings(".correct").addClass("bg-green").addClass("txt-white-darker");
     } else {
-      $(".page:nth-child(" +(cnQ-1) + ") .ans:not(.correct)").hide();
-      $(".page:nth-child(" +(cnQ-1) + ") .correct").css({backgroundColor:"#9ccc65",color:"#ffffff"});
+      $("#questions .page:nth-child(" +(cnQ-1) + ") .ans:not(.correct)").hide();
+      $("#questions .page:nth-child(" +(cnQ-1) + ") .correct").addClass("bg-green").addClass("txt-white-darker");
     }
     setTimeout(nextQ,1000);
   }
