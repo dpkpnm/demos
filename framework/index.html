@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-  <link rel='stylesheet' href='http://5c4cf848f6454dc02ec8-c49fe7e7355d384845270f4a7a0a7aa1.r53.cf2.rackcdn.com/css/4baefdf8dc9263bfa6e0f6ea292b06ad6c8eacbf/furtive.min.css'/>
+  <link rel='stylesheet' href='furtive.min.css'/>
   <style>
     *{margin:0; padding:0}
     body {font-family:"Open Sans"}
@@ -23,19 +23,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/TweenMax.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/easing/EasePack.min.js"></script>
 
-  <body class="bg-blue-grey-800">
+  <body class="bg-grey-900">
   <div id="progress"></div>
   <div id="questions" class="page-wrapper"></div>
+  <div id="score" class="page">
+    <div class="txt--center middle box bold text-white-darker" x=1 y=1 sizex=6 sizey=2>TEST</div>
+    <div class="txt--center middle" x=1 y=3><span class="p1 fab brdr-blue-500 txt-blue-500">8</span></div>
+    <div class="txt--center middle" x=2 y=3><span class="p1 fab brdr-green-500 brdr txt-green-500 bold">8</span></div>
+    <div class="txt--center middle" x=3 y=3><span class="p1 fab brdr-orange-500 txt-orange-500">8</span></div>
+    <div class="txt--center middle" x=4 y=3><span class="p1 fab brdr-purple-500 txt-purple-500">8</span></div>
+    <div class="txt--center middle" x=5 y=3><span class="p1 fab brdr-brown-500 txt-brown-500">8</span></div>
+    <div class="txt--center middle" x=6 y=3><span class="p1 fab brdr-blue-500 txt-blue-500">8</span></div>
+    <div x=1 y=4 sizex=6 class="bg-blue-300 middle">asdfa</div>
+    <div x=1 y=5 sizex=6 class="bg-yellow-300 middle">asdfa</div>
+    <div x=1 y=4 sizex=6 class="bg-blue-300 middle">asdfa</div>
+  </div>
+
   </body>
 </html>
 <script id='questionTemplate' type='text/ractive'>
    {{#questions}}
   <div class="txt--center question grid page">
     <div x="1" y="1" sizey="3" class="text-white-darker middle bold box">{{q}}</div>
-    <div x="1" y="4" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='a' ? 'correct':''}}" data-ripple-color="#9ccc65">{{a}}</div>
-    <div x="1" y="5" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='b' ? 'correct':''}}" data-ripple-color="#f44336">{{b}}</div>
-    <div x="1" y="6" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='c' ? 'correct':''}}" data-ripple-color="#f44336">{{c}}</div>
-    <div x="1" y="7" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='d' ? 'correct':''}}" data-ripple-color="#f44336">{{d}}</div>
+    <div x="1" y="4" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='a' ? 'correct':''}}" data-ripple-color="{{ans=='a' ? 'red':'green'}}">{{a}}</div>
+    <div x="1" y="5" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='b' ? 'correct':''}}" data-ripple-color="{{ans=='b' ? 'red':'green'}}">{{b}}</div>
+    <div x="1" y="6" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='c' ? 'correct':''}}" data-ripple-color="{{ans=='c' ? 'red':'green'}}">{{c}}</div>
+    <div x="1" y="7" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='d' ? 'correct':''}}" data-ripple-color="{{ans=='d' ? 'red':'green'}}">{{d}}</div>
   </div>
   {{/questions}}
 </script>
@@ -44,6 +57,8 @@
   var cnQ=1;
   $("body").ready(function() {
     grid(".question",{maxCols:1,cols:1,maxRows:7,rows:7,h:innerHeight-50,m:4});
+    grid("#score",{maxCols:6,cols:6,maxRows:5,rows:5,h:innerHeight-50,m:0});
+
     var ractive = new Ractive({
       el: '#questions',
       template: '#questionTemplate',
@@ -67,22 +82,29 @@
   var bar = new ProgressBar.Line('#progress', {color:"#2196F3"});
   // bar.animate(1,{duration:8000},showAns);
   function nextQ() {
-    bar.set(0);
-    if(cnQ>1)
-      TweenMax.to($(".page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3})
-    TweenMax.to($(".page:nth-child(" +cnQ + ")"),0.6,{x:0,onComplete:function() {
-      bar.animate(1,{duration:8000},showAns);
-    }});
+    if(cnQ<10) {
+      bar.set(0);
+      if(cnQ>1)
+        TweenMax.to($(".page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3})
+      TweenMax.to($(".page:nth-child(" +cnQ + ")"),0.6,{x:0,onComplete:function() {
+        bar.animate(1,{duration:8000},showAns);
+      }});
+      cnQ++;
+    } else
+      showScore();
+  }
+  function showScore() {
+    TweenMax.to($(".page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3});
+    TweenMax.to($("#score"),0.6,{x:0});
 
-    cnQ++;
   }
   function showAns(el) {
     if(el && el.hasClass("ans")) {
-      $(el).hide();
-      $(el).siblings(".correct").show().css({backgroundColor:"#9ccc65",color:"#ffffff"});
+      $(el).not(".correct").hide();
+      $(el).siblings(".correct").css({backgroundColor:"#9ccc65",color:"#ffffff"});
     } else {
-      $(".page:nth-child(" +(cnQ-1) + ") .ans").hide();
-      $(".page:nth-child(" +(cnQ-1) + ") .correct").show().css({backgroundColor:"#9ccc65",color:"#ffffff"});
+      $(".page:nth-child(" +(cnQ-1) + ") .ans:not(.correct)").hide();
+      $(".page:nth-child(" +(cnQ-1) + ") .correct").css({backgroundColor:"#9ccc65",color:"#ffffff"});
     }
     setTimeout(nextQ,1000);
   }
