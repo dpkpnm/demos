@@ -1,10 +1,9 @@
-
 <html>
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-  <link rel='stylesheet' href='http://5c4cf848f6454dc02ec8-c49fe7e7355d384845270f4a7a0a7aa1.r53.cf2.rackcdn.com/css/4baefdf8dc9263bfa6e0f6ea292b06ad6c8eacbf/furtive.min.css'/>
+  <link rel="stylesheet" href="furtive.min.css">
   <style>
     *{margin:0; padding:0}
     body {font-family:"Open Sans"}
@@ -19,23 +18,51 @@
     .page-wrapper {width:100%;height:0px; position: absolute; left:0; top:0;}
     .page {position: absolute; left:0; top:0;}
   </style>
-  <script src='http://5c4cf848f6454dc02ec8-c49fe7e7355d384845270f4a7a0a7aa1.r53.cf2.rackcdn.com/bundles/1dcb80f6d392bf70fe9751762f2ca064c8264583.js'></script>
+   <script src="jquery.js"></script>
+  <script src="jquery.grid.js"></script>
+  <script src="ripple.js"></script>
+  <script src="ProgressBar.js"></script>
+  <script src="ractive.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/TweenMax.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/easing/EasePack.min.js"></script>
-
-  <body class="bg-blue-grey-800">
+  <body class="bg-grey-900">
   <div id="progress"></div>
+  <div id="start" class="page">
+    <div class="middle box" x=1 y=1 sizey=2 sizex=3><span class="px2 py1 h4 btn bg-white-darker pointer" id="startbtn">Start Game</span></div>
+    <div class="txt--center" x=1 y=3><div class="thin upper txt-s txt-white-darker clr">Leaderboard</div><br><span class="py1 px2 fab brdr-blue-500 txt-blue-500">8</span></div>
+    <div class="txt--center" x=2 y=3><div class="thin upper txt-s txt-white-darker clr">Stats</div><br><span class="py1 px2 fab brdr-green-500 txt-green-500">8</span></div>
+    <div class="txt--center" x=3 y=3><div class="thin upper txt-s txt-white-darker clr">Challenges</div><br><span class="py1 px2 fab brdr-orange-500 txt-orange-500">8</span></div>
+
+  </div>
   <div id="questions" class="page-wrapper"></div>
+  <div id="score" class="page yscroll">
+    <div class="txt--center middle box bold txt-white-darker h2" x=1 y=1 sizex=4 sizey=1>Game Score</div>
+    <div class="txt--center" x=1 y=3><div class="thin upper txt-s txt-white-darker clr">Correct Points</div><br><span class="py1 px2 fab brdr-blue-500 txt-blue-500">8</span></div>
+    <div class="txt--center" x=2 y=3><div class="thin upper txt-s txt-white-darker clr">Time Bonus</div><br><span class="py1 px2 fab brdr-green-500 txt-green-500">8</span></div>
+    <div class="txt--center" x=3 y=3><div class="thin upper txt-s txt-white-darker clr">Hardness Bonus</div><br><span class="py1 px2 fab brdr-orange-500 txt-orange-500">8</span></div>
+    <div class="txt--center" x=4 y=3><div class="thin upper txt-s txt-white-darker clr">Total</div><br><span class="py1 px2 fab brdr-purple-500 txt-purple-500">8</span></div>
+    <div x=2 y=4 sizex=2 sizey=1 class="middle"><span class="px2 py1 h4 btn txt-black-darker bold bg-white-darker" id="restart">Restart Game</span></div>
+    <div x=1 y=5 sizex=4 class="bg-blue-300 p1 txt-black-darker h4 txt--left bold">
+      Challenge Friends<br><br>
+      <span class="m2 fab bg-blue-800 px2 py1 txt-white-darker">A</span>
+      <span class="m2 fab bg-blue-800 px2 py1 txt-white-darker">B</span>
+      <span class="m2 fab bg-blue-800 px2 py1 txt-white-darker">C</span>
+      <span class="m2 fab bg-blue-800 px2 py1 txt-white-darker">D</span>
+      <span class="m2 fab bg-blue-800 px2 py1 txt-white-darker">F</span>
+    </div>
+    <div x=1 y=6 sizex=4 class="bg-yellow-300 middle">asdfa</div>
+  </div>
+
   </body>
 </html>
 <script id='questionTemplate' type='text/ractive'>
    {{#questions}}
   <div class="txt--center question grid page">
-    <div x="1" y="1" sizey="3" class="text-white-darker middle bold box">{{q}}</div>
-    <div x="1" y="4" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='a' ? 'correct':''}}" data-ripple-color="#9ccc65">{{a}}</div>
-    <div x="1" y="5" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='b' ? 'correct':''}}" data-ripple-color="#f44336">{{b}}</div>
-    <div x="1" y="6" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='c' ? 'correct':''}}" data-ripple-color="#f44336">{{c}}</div>
-    <div x="1" y="7" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='d' ? 'correct':''}}" data-ripple-color="#f44336">{{d}}</div>
+    <div x="1" y="1" sizey="3" class="txt-white-darker h3 middle bold box">{{q}}</div>
+    <div x="1" y="4" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='a' ? 'correct':''}}" data-ripple-color="{{ans=='a' ? 'green':'red'}}">{{a}}</div>
+    <div x="1" y="5" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='b' ? 'correct':''}}" data-ripple-color="{{ans=='b' ? 'green':'red'}}">{{b}}</div>
+    <div x="1" y="6" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='c' ? 'correct':''}}" data-ripple-color="{{ans=='c' ? 'green':'red'}}">{{c}}</div>
+    <div x="1" y="7" class="ripple-effect bg-white-darker p1 ans middle bold box {{ans=='d' ? 'correct':''}}" data-ripple-color="{{ans=='d' ? 'green':'red'}}">{{d}}</div>
   </div>
   {{/questions}}
 </script>
@@ -44,6 +71,9 @@
   var cnQ=1;
   $("body").ready(function() {
     grid(".question",{maxCols:1,cols:1,maxRows:7,rows:7,h:innerHeight-50,m:4});
+    grid("#score",{maxCols:4,cols:4,maxRows:10,rows:5,h:innerHeight-50,m:0});
+    grid("#start",{maxCols:3,cols:3,maxRows:3,rows:3,h:innerHeight-50,m:0});
+
     var ractive = new Ractive({
       el: '#questions',
       template: '#questionTemplate',
@@ -59,30 +89,61 @@
           {q:"Question9",a:"Answer A",b:"Answer B",c:"Answer C",d:"Answer D",ans:"c" },
       ]}
     });
-    nextQ();
+    showStart();
+    $("#startbtn").on("click", function() {
+      cnQ=1;
+      nextQ();
+    })
+    $("#restart").on("click", function() {
+      restart();
+    })
   })
   $(window).smartresize(function() {
-    test.resize();
   })
   var bar = new ProgressBar.Line('#progress', {color:"#2196F3"});
   // bar.animate(1,{duration:8000},showAns);
   function nextQ() {
-    bar.set(0);
-    if(cnQ>1)
-      TweenMax.to($(".page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3})
-    TweenMax.to($(".page:nth-child(" +cnQ + ")"),0.6,{x:0,onComplete:function() {
-      bar.animate(1,{duration:8000},showAns);
-    }});
+    if(cnQ==1) {
 
-    cnQ++;
+    }
+    if(cnQ<5) {
+      bar.set(0);
+      if(cnQ>1)
+        TweenMax.to($("#questions .page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3})
+      else
+        TweenMax.to("#start",0.3,{x:-innerWidth});
+      TweenMax.to($("#questions .page:nth-child(" +cnQ + ")"),0.6,{x:0,onComplete:function() {
+        bar.animate(1,{duration:8000},showAns);
+      }});
+      cnQ++;
+    } else
+      showScore();
+  }
+
+  function restart() {
+    TweenMax.set("#questions .page",{x:innerWidth,alpha:1});
+    cnQ=1;
+    TweenMax.to($("#score"),0.3,{x:-innerWidth});
+    nextQ();
+  }
+  
+  function showStart() {
+    TweenMax.to($("#start"),0.3,{x:0});
+  }
+
+  function showScore() {
+    bar.set(0);
+    TweenMax.to($("#questions .page:nth-child(" +(cnQ-1) + ")"),0.6,{x:-innerWidth,alpha:0.3});
+    TweenMax.to($("#score"),0.6,{x:0});
+
   }
   function showAns(el) {
     if(el && el.hasClass("ans")) {
-      $(el).hide();
-      $(el).siblings(".correct").show().css({backgroundColor:"#9ccc65",color:"#ffffff"});
+      $(el).not(".correct").hide();
+      $(el).siblings(".correct").addClass("bg-green").addClass("txt-white-darker");
     } else {
-      $(".page:nth-child(" +(cnQ-1) + ") .ans").hide();
-      $(".page:nth-child(" +(cnQ-1) + ") .correct").show().css({backgroundColor:"#9ccc65",color:"#ffffff"});
+      $("#questions .page:nth-child(" +(cnQ-1) + ") .ans:not(.correct)").hide();
+      $("#questions .page:nth-child(" +(cnQ-1) + ") .correct").addClass("bg-green").addClass("txt-white-darker");
     }
     setTimeout(nextQ,1000);
   }

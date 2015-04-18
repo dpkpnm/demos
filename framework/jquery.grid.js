@@ -1,57 +1,42 @@
-var grids=[];
-;(function($){
-  $.fn.grid = function(options) {
-    var defaults = {
-      cols:8,
-      rows:3,
-      maxCols:8,
-      maxRows:3,
-      m:4
-    }
-    var plugin = this;
-    plugin.settings = {};
-    var $element = $(this);
+function grid(el, options) {
+  var defaults = {cols:8, rows:3, maxCols:8, maxRows:3, m:4,w:innerWidth,h:innerHeight };
+  settings = $.extend({}, defaults, options);
 
-    var init = function() {
-      $element.addClass("grid");
-      $element.children().addClass("box");
-      plugin.resize();
-    }
+  $el = $(el);
+  $el.addClass("grid");
+  $el.children().addClass("box");
+  boxW=(settings.w)/settings.cols-2*settings.m;
+  boxH=(settings.h)/settings.rows-2*settings.m;
 
-    plugin.destroy = function() {
-    }
+  m=settings.m;
 
-    plugin.resize = function() {
-      defaults.w=innerWidth;
-      defaults.h=innerHeight;
-      plugin.settings = $.extend({}, defaults, options);
-      boxW=(plugin.settings.w)/plugin.settings.cols-2*plugin.settings.m;
-      boxH=(plugin.settings.h)/plugin.settings.rows-2*plugin.settings.m;
-      m=plugin.settings.m;
-      id="#"+$element.attr("id");
-      idBox=id+" .box";
-      if($(id +"style").length==0)
-        $("head").append("<style id=" +$element.attr("id")+"style></style>");
-      styleObj = $(id +"style");
-      var str=idBox + "{width:" +boxW + "px;height:"+boxH+"px;}";
-      for(k=0;k<plugin.settings.maxCols; k++) {
-        left=(k)*boxW+(2*k+1)*m;
-        str+=idBox + "[x=\"" + (k+1) + "\"] {left:" +left+"px;} "
-        width=boxW*(k+1)+(k*m*2);
-        str+=idBox + "[sizeX=\"" + (k+1) + "\"] {width:" +width+"px;} "
-      }
-      for(k=0;k<plugin.settings.maxRows; k++) {
-        y=(k)*boxH+(2*k+1)*m;
-        str+=idBox + "[y=\"" + (k+1) + "\"] {top:" +y+"px;} "
-        height=boxH*(k+1)+(k*m*2);
-        str+=idBox + "[sizeY=\"" + (k+1) + "\"] {height:" +height+"px;} "
-      }
-      styleObj.html(str);    }
+  id=el.substring(1,el.length);
+  styleid=id.replace(".","")+"style";
 
-    init();
-    return this;
+  idBox=el+" .box";
+  
+  if($(styleid).length==0)
+    $("head").append("<style id=" +styleid+"></style>");
+  
+  styleObj = $("#"+id +"style");
+  
+  var str=".page{width:" + innerWidth+ "px;height:" +innerHeight  + "px;transform: matrix(1, 0, 0, 1, " + innerWidth + ", 0);} " + idBox + "{width:" +boxW + "px;height:"+boxH+"px;}";
+  
+  for(k=0;k<settings.maxCols; k++) {
+    left=(k)*boxW+(2*k+1)*m;
+    str+=idBox + "[x=\"" + (k+1) + "\"] {left:" +left+"px;} "
+    width=boxW*(k+1)+(k*m*2);
+    str+=idBox + "[sizeX=\"" + (k+1) + "\"] {width:" +width+"px;} "
   }
-})(jQuery);
+  for(k=0;k<settings.maxRows; k++) {
+    y=(k)*boxH+(2*k+1)*m;
+    str+=idBox + "[y=\"" + (k+1) + "\"] {top:" +y+"px;} "
+    height=boxH*(k+1)+(k*m*2);
+    str+=idBox + "[sizeY=\"" + (k+1) + "\"] {height:" +height+"px;} "
+  }
+  styleObj.html(str); 
+}
+
 
 (function($,sr){
 
