@@ -16,6 +16,22 @@ jQuery(document).ready(function($) {
 
 		// Get custom color for ripple effect
 		var color = the_dom.attr( 'data-ripple-color' );
+		if(the_dom.hasClass("ans")) {
+			bar.stop();
+			setTimeout(function() {
+				the_dom.css({backgroundColor:color,color:"#FFFFFF"});
+				the_dom.siblings(".ans:not(.correct)").hide();
+				if(!the_dom.hasClass("correct")) {
+
+					setTimeout(function() {
+						showAns(the_dom);
+					},500)
+				} else {
+					setTimeout(nextQ,1000);
+				}
+
+			},600);
+		}
 		if( typeof color == 'undefined' ){
 			color = 'grey';
 		}
